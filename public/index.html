@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>훈민정음 초성 게임</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="app">
+        <header class="app-header">
+            <h1 class="app-title">훈민정음 초성 게임</h1>
+            <p class="app-subtitle">초성 2글자로 즐기는 실시간 단어 대결</p>
+        </header>
+
+        <main class="app-main">
+            <!-- 로비 화면 -->
+            <section id="view-lobby" class="view view-active">
+                <div class="card">
+                    <h2 class="card-title">입장하기</h2>
+                    <p class="card-text">닉네임을 입력하고 방을 만들거나, 코드로 입장하세요.</p>
+
+                    <div class="form-group">
+                        <label for="nickname">닉네임</label>
+                        <input type="text" id="nickname" maxlength="10" placeholder="예: 수민" />
+                    </div>
+
+                    <div class="divider"><span>방 선택</span></div>
+
+                    <div class="lobby-actions">
+                        <button id="btn-create-room" class="btn btn-primary">방 만들기</button>
+
+                        <div class="join-room">
+                            <input type="text" id="join-code" maxlength="6" placeholder="방 코드 입력" />
+                            <button id="btn-join-room" class="btn btn-outline">입장</button>
+                        </div>
+                    </div>
+
+                    <p class="hint">
+                        최대 <strong>8명</strong>까지 같은 방에서 함께 플레이할 수 있어요.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 대기 방 화면 -->
+            <section id="view-room" class="view">
+                <div class="card">
+                <div class="room-header">
+                    <div>
+                        <h2 class="card-title">대기 중인 방</h2>
+                        <p class="card-text">
+                            친구들이 모두 모이면 게임을 시작할 수 있어요.
+                        </p>
+                    </div>
+                    <div class="room-info-badges">
+                        <span class="badge badge-room">
+                            방 코드: <span id="room-code-label">----</span>
+                        </span>
+                        <span class="badge badge-role" id="badge-role">참가자</span>
+                    </div>
+                </div>
+
+                <div class="room-content">
+                    <div class="room-players">
+                        <h3 class="section-title">
+                            플레이어 <span id="player-count">(0/8)</span>
+                        </h3>
+                        <ul id="player-list" class="player-list">
+                            <!-- JS에서 렌더링 -->
+                        </ul>
+                    </div>
+
+                    <div class="room-actions">
+                        <p class="room-tip">
+                            방장은 <strong>게임 시작</strong> 버튼을 눌러 라운드를 시작할 수 있어요.
+                        </p>
+
+                        <button id="btn-start-game" class="btn btn-primary btn-full" disabled>게임 시작</button>
+
+                        <button id="btn-leave-room" class="btn btn-ghost btn-full">나가기</button>
+                    </div>
+                </div>
+                </div>
+            </section>
+
+            <!-- 게임 진행 화면 -->
+            <section id="view-game" class="view">
+                <div class="card game-layout">
+                    <div class="game-main">
+                        <div class="game-topbar">
+                            <div class="topbar-item">
+                                <span class="topbar-label">방 코드</span>
+                                <span id="game-room-code" class="topbar-value">----</span>
+                            </div>
+                            <div class="topbar-item">
+                                <span class="topbar-label">라운드</span>
+                                <span id="game-round" class="topbar-value">1</span>
+                            </div>
+                            <div class="topbar-item">
+                                <span class="topbar-label">남은 시간</span>
+                                <span id="game-timer" class="topbar-value timer">10</span>
+                            </div>
+                        </div>
+
+                        <div class="chosung-display">
+                            <span id="chosung-text">ㄱㅈ</span>
+                        </div>
+
+                        <div class="answer-area">
+                            <label for="answer-input" class="answer-label">
+                                초성에 맞는 두 글자 단어를 입력하세요
+                            </label>
+                            <div class="answer-row">
+                                <input type="text" id="answer-input" maxlength="2" placeholder="예: 과정" />
+                                <button id="btn-submit-answer" class="btn btn-primary">제출</button>
+                            </div>
+                            <p id="answer-message" class="answer-message"></p>
+                        </div>
+
+                        <!-- ✅ 사용했던 단어들 표시 영역 -->
+                        <div class="used-words-section">
+                            <div class="used-words-header">
+                                <span class="section-title">사용한 단어</span>
+                                <span class="used-words-hint">정답으로 인정된 단어들이 왼쪽에서 오른쪽으로 쌓여요</span>
+                            </div>
+                            <div id="used-words" class="used-words-strip">
+                                <!-- JS에서 카드가 추가됨 -->
+                            </div>
+                        </div>
+
+                        <div class="game-bottom">
+                            <button id="btn-exit-game" class="btn btn-ghost">나가기</button>
+                        </div>
+                    </div>
+
+                    <aside class="game-sidebar">
+                        <h3 class="section-title">플레이어</h3>
+                        <ul id="game-player-list" class="player-list player-list-compact">
+                            <!-- JS에서 렌더링 -->
+                        </ul>
+
+                        <div class="sidebar-divider"></div>
+
+                        <h3 class="section-title">라운드 로그</h3>
+                        <div id="game-log" class="game-log">
+                            <!-- JS에서 로그 쌓기 -->
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <!-- 게임 종료 / 결과 화면 -->
+            <section id="view-result" class="view">
+                <div class="card">
+                    <h2 class="card-title">게임 종료</h2>
+                    <p class="card-text">최종 순위입니다.</p>
+
+                    <ol id="result-list" class="result-list">
+                        <!-- JS에서 렌더링 -->
+                    </ol>
+
+                    <div class="result-actions">
+                        <button id="btn-back-to-room" class="btn btn-outline">게임방으로 돌아가기</button>
+                        <button id="btn-back-to-lobby" class="btn btn-primary">로비로 돌아가기</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <span>훈민정음 초성 게임 · JavaScript + Socket.io</span>
+        </footer>
+    </div>
+
+    <div id="toast-root" class="toast-root"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
